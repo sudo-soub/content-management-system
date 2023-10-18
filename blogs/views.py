@@ -4,6 +4,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from blogs.models import Blogs
 from blogs.serializers import BlogsSerializer
+from django.conf import settings
+
+from github import Github
 
 
 class BlogsGetPostView(views.APIView):
@@ -40,3 +43,23 @@ class BlogsRetrieveUpdateView(views.APIView):
         """Update method for Blogs"""
         # TBD........
         return Response({}, status=status.HTTP_200_OK)
+
+
+class Upload(views.APIView):
+
+    def post(self, request, *args, **kwargs):
+        filepath = self.request.FILES.get("file")
+        content = filepath.file.getvalue()
+        filename = filepath.name
+        message = "Test commit"
+        branch = "main"
+        git = Github(settings.GIT_TOKEN)
+        gituser = settings.GIT_USER
+        repo = git.get_repo("sudo-soub/cms-files")
+        result = repo.create_file(
+            path=filepath.name, message=message, content=content, branch=branch
+        )
+        image_url = "https://github.com/{}/cms-files/blob/{}/{}".format(
+            gituser, branch, filename
+        )
+        return Response({"image_url": image_url}, status=status.HTTP_201_CREATED)
