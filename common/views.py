@@ -81,6 +81,8 @@ class CreateAccount(views.APIView):
         email = request.data.get("email", None)
         password = request.data.get("password", None)
         username = request.data.get("username", None)
+        firstname = request.data.get("firstname", "")
+        lastname = request.data.get("lastname", "")
 
         if not email or not password or not username:
             # if data is not present in the request
@@ -114,6 +116,8 @@ class CreateAccount(views.APIView):
                 user = User.objects.create_user(username, email, password)
 
                 if user:
+                    user.first_name = firstname
+                    user.last_name = lastname
                     user.save()
                     msg = "User {} created successfully".format(username)
                     return Response(
@@ -132,9 +136,12 @@ class UserLogin(views.APIView):
 
     def post(self, request, *args, **kwargs):
         """Function for POST request."""
-        data = request.data
-        username = data["username"]
-        password = data["password"]
+        username = request.data.get("username", None)
+        password = request.data.get("password", None)
+
+        if not username or not password:
+            err = "Username and password are required!"
+            return Response({"error": err}, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if there is the user is authenticated or not.
         user = authenticate(username=username, password=password)

@@ -156,3 +156,5 @@ EMAIL_HOST_PASSWORD = "pmsquwjydgtuleqw"
 JWT_SECRET = "openhappinessskjakjsdcjascbdsckweoiq"
 LOGIN_EXPIRY = os.getenv('LOGIN_EXPIRY')
 REFRESH_EXPIRY = os.getenv('REFRESH_EXPIRY')
+GIT_TOKEN = os.environ.get("GIT_TOKEN")
+GIT_USER = os.environ.get("GIT_USER")

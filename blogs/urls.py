@@ -11,5 +11,9 @@ urlpatterns = [
         'blog/<str:pk>',
         views.BlogsRetrieveUpdateView.as_view(),
         name="retrieve-update-blog"
+    ),
+    path(
+        'upload',
+        views.Upload.as_view()
     )
 ]
