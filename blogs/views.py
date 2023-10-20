@@ -19,15 +19,17 @@ class BlogsGetPostView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         """POST request to create blogs"""
-        serializer = BlogsSerializer(data=request.data)
+        # serializer = BlogsSerializer(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(
-            {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
-        )
+        # return Response(
+        #     {"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+        # )
+        print("user", self.request.user)
+        return Response({}, status=status.HTTP_201_CREATED)
 
 
 class BlogsRetrieveUpdateView(views.APIView):
