@@ -9,11 +9,14 @@ urlpatterns = [
     ),
     path(
         'blog/<str:pk>',
-        views.BlogsRetrieveUpdateView.as_view(),
+        views.BlogsRetrieveUpdateView.as_view({
+            'get': 'retrieve'
+        }),
         name="retrieve-update-blog"
     ),
     path(
-        'upload',
-        views.Upload.as_view()
+        'myblogs/',
+        views.GetUpdateBlogsByUser.as_view(),
+        name="get-update-blogs-by-user"
     )
 ]
