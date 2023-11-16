@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User, Permission, Group
 from django.contrib.auth import authenticate
 from common.models import UserToken
-from datetime import timezone
+from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
 
@@ -155,6 +155,7 @@ class UserLogin(views.APIView):
                 "access_key_expired": token_obj.access_key_expired,
                 "refresh_key": token_obj.refresh_key,
                 "refresh_key_expired": token_obj.refresh_key_expired,
+                "username": user.username
             }
             return Response(msg, status=status.HTTP_201_CREATED)
         
@@ -174,6 +175,7 @@ class RefreshToken(views.APIView):
         """Function for POST request."""
         access_key = request.data.get("access_key")
         refresh_key = request.data.get("refresh_key")
+        username = request.data.get("username")
         
         if not access_key or not refresh_key:
             err = "access_key or refresh_key is required and cannot be empty."
@@ -201,6 +203,7 @@ class RefreshToken(views.APIView):
                     "access_key_expired": created_token.access_key_expired,
                     "refresh_key": created_token.refresh_key,
                     "refresh_key_expired": created_token.refresh_key_expired,
+                    "username": username
                 }
                 return Response(msg, status=status.HTTP_200_OK)
             
